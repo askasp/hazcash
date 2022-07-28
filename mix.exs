@@ -55,7 +55,7 @@ defmodule HazCash.MixProject do
       {:absinthe, "~> 1.7.0"},
       {:absinthe_plug, "~> 1.5.8"},
       {:fun_with_flags, "~> 1.8.1"},
-      {:fun_with_flags_ui, "~> 0.7.2"},
+      {:fun_with_flags_ui, "~> 0.8.1"},
       {:stripity_stripe, "~> 2.0"},
       {:guardian, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},
