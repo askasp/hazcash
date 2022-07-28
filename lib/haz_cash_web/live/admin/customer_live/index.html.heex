@@ -1,0 +1,87 @@
+<.admin_page_heading title="Customers">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Customers", to: Routes.admin_customer_index_path(@socket, :index) %></:link>
+
+  <div class="btn-group">
+    <%= live_patch to: Routes.admin_subscription_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Subscriptions
+    <% end %>
+    <%= live_patch to: Routes.admin_product_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Products
+    <% end %>
+    <%= live_patch to: Routes.admin_customer_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Customers
+    <% end %>
+    <%= live_patch to: Routes.admin_invoice_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Invoices
+    <% end %>
+  </div>
+</.admin_page_heading>
+
+<.admin_card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>
+            <.data_table_link sort={:email} params={@params}>
+              Email
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:stripe_id} params={@params}>
+              Stripe
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:card_brand} params={@params}>
+              Card brand
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:card_exp_month} params={@params}>
+              Card exp month
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:card_exp_year} params={@params}>
+              Card exp year
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:card_last4} params={@params}>
+              Card last4
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:inserted_at} params={@params}>
+              Created
+            </.data_table_link>
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="customers">
+<%= for customer <- @entries do %>
+        <tr id={"customer-#{customer.id}"} class="text-sm">
+          <td><%= customer.email %></td>
+          <td><%= customer.stripe_id %></td>
+          <td><%= customer.card_brand %></td>
+          <td><%= customer.card_exp_month %></td>
+          <td><%= customer.card_exp_year %></td>
+          <td><%= customer.card_last4 %></td>
+          <td><%= Calendar.strftime customer.inserted_at, "%x" %></td>
+          <td class="text-right">
+            <span><%= live_redirect "Show", to: Routes.admin_customer_show_path(@socket, :show, customer), class: "link link-primary" %></span>
+          </td>
+        </tr>
+<% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2 mb-4">
+    <.pagination params={@params} {@pagination_assigns} />
+  </div>
+</.admin_card>

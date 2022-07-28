@@ -1,0 +1,57 @@
+<div>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="expense-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+  
+    <div class="mb-6 form-control grid grid-cols-2 gap-4 ">
+    <div class="w-full">
+    <%= label f, :amount, class: "label label-text" %>
+    <%= number_input f, :amount, class: "input input-bordered w-full" %>
+    <%= error_tag f, :amount %>
+    </div>
+    
+    
+    <div class="w-full">
+    <%= label f, :expense_account, class: "label label-text" %>
+    <%= select f, :expense_account_id, @expense_accounts, class: "input input-bordered w-full" %>
+    <%= error_tag f, :expense_account %>
+    </div>
+    
+    
+    </div>
+    
+    <div class="mb-6 form-control grid grid-cols-2 gap-4 ">
+    <div class="w-full">
+    <%= label f, :month, class: "label label-text" %>
+    <%= select f, :month, ["January","February","March","April","May","June","July","August","September","October","November","December"], class: "input input-bordered w-full" %>
+    <%= error_tag f, :month %>
+    </div>
+    
+    
+    <div class="w-full">
+    <%= label f, :year, class: "label label-text" %>
+    <%= select f, :year, ["2022", "2023", "2024", "2025"], class: "input input-bordered w-full" %>
+    <%= error_tag f, :year%>
+    </div>
+    
+    </div>
+
+    <div class="mb-6 form-control">
+    <%= label f, :description, class: "label label-text" %>
+    <%= textarea f, :description, class: "input input-bordered" %>
+    <%= error_tag f, :description %>
+    </div>
+    
+    
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

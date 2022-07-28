@@ -1,0 +1,135 @@
+
+
+<h1 class="mb-8  font-sans text-3xl text-base-content text-opacity-80 leading-10 md:text-3xl"> Overview </h1>
+
+<%= if @live_action in [:expenses] do %>
+  <.modal return_to={"/home"}>
+    <:modal_title><%= month_nr_to_name(Enum.at(@show_expenses,0).month)  <> " " <> Enum.at(@show_expenses,0).year %></:modal_title>
+    <.live_component
+      module={HazCashWeb.ShowExpenseComponent}
+      show_expenses={@show_expenses}
+      id={:show_expense}
+      title={"samma"}
+      return_to={"/home"}
+    />
+  </.modal>
+<% end %>
+
+<%= if @live_action in [:new_expenses] do %>
+  <.modal return_to={"/home"}>
+    <:modal_title> New Expense </:modal_title>
+    <.live_component
+      module={HazCashWeb.NewExpenseComponent}
+      id={:new_expense}
+      account_id={@account_id}
+      labels={@labels}
+      return_to={"/home"}
+    />
+  </.modal>
+<% end %>
+
+
+
+
+<div class="flex justify-end">
+<form id="id_1" phx-update="ignore" phx-change="update_filter">
+
+<div class="dropdown ">
+  <label tabindex="0" class="btn m-1 btn-wide btn-sm btn-neutral">Group By </label>
+  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+<%= for label <- @label_keys do %>
+
+<div class="form-control">
+  <label class="label cursor-pointer">
+    <span class="label-text"> <%= label %> </span> 
+    <input name={label} type="checkbox"  class="checkbox checkbox-primary checkbox-xs" />
+  </label>
+</div>
+<% end %>
+
+</ul>
+</div>
+
+</form>
+</div>
+
+
+
+
+
+
+<div class="overflow-x-auto">
+  <table class="table table-compact w-full">
+    <thead>
+      <tr>
+        <th class="w-14"> Labels</th> 
+        <th class="w-14">January </th> 
+        <th class="w-14">February </th> 
+        <th class="w-14">March </th> 
+        <th class="w-14">April</th> 
+        <th class="w-14"> May </th> 
+        <th class="w-14">June </th>
+        <th class="w-14">July </th>
+        <th class="w-14">August </th>
+        <th class="w-14">September</th>
+        <th class="w-14">October </th>
+        <th class="w-14">November</th>
+        <th class="w-14">December</th>
+      </tr>
+    </thead> 
+    <tbody>
+
+      <%= for {key, expenses} <- @expenses do %>
+      <tr>
+
+        <td>
+          <%= case key do %>
+            <%= "" ->%> <span class="badge badge-outline text-xs"> Not in filter </span>
+            <%= x when is_list(x) ->%>
+            <%= for l <- x do %>
+              <span class="mb-1 badge badge-outline text-xs"> <%= l %> </span>
+              <br/>
+            <% end%>
+            <% end %>
+        </td> 
+        <%= for index <- 0..11 do %>
+          <td type="a" phx-click="show_expenses" phx-value-expenses={filter_expenses_on_month(expenses,index) |> expenses_to_query_params} class=" w-14 bg-error font-mono"> <%= merge_expenses_for_month(expenses, index) %> </td> 
+          <% end %>
+      </tr>
+      <% end %>
+      
+    </tbody> 
+    <tfoot>
+      <tr>
+        <th> Labels </th> 
+        <th>January </th> 
+        <th>February </th> 
+        <th>March </th> 
+        <th>April</th> 
+        <th>May </th> 
+        <th>June </th>
+        <th>July </th>
+        <th>August </th>
+        <th>September</th>
+        <th>October </th>
+        <th>November</th>
+        <th>December</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="flex justify-center mt-10 gap-12">
+<button class="btn btn-success "> Add Income </button>
+<%= live_patch to: "/home/expenses/new" do %> 
+<button class="btn btn-error "> Add Expense </button>
+<% end %>
+
+</div>
+
+<button phx-click="populate_test_data" class="mt-24 btn btn-secondary mb-2 btn-sm"> Create Test Data </button>
+<br/>
+
+
+<button phx-click="delete_test_data" class="btn btn-error mb-2 btn-sm"> Delete Test Data </button>
+

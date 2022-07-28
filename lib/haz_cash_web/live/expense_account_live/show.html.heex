@@ -1,0 +1,31 @@
+<h1>Show Expense account</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.expense_account_show_path(@socket, :show, @expense_account)}>
+    <.live_component
+      module={HazCashWeb.ExpenseAccountLive.FormComponent}
+      id={@expense_account.id}
+      title={@page_title}
+      action={@live_action}
+      expense_account={@expense_account}
+      return_to={Routes.expense_account_show_path(@socket, :show, @expense_account)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @expense_account.name %>
+  </li>
+
+  <li>
+    <strong>Priority:</strong>
+    <%= @expense_account.priority %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.expense_account_show_path(@socket, :edit, @expense_account), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.expense_account_index_path(@socket, :index) %></span>

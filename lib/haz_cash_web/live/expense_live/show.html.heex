@@ -1,0 +1,41 @@
+<h1>Show Expense</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.expense_show_path(@socket, :show, @expense)}>
+    <.live_component
+      module={HazCashWeb.ExpenseLive.FormComponent}
+      id={@expense.id}
+      title={@page_title}
+      action={@live_action}
+      expense={@expense}
+      return_to={Routes.expense_show_path(@socket, :show, @expense)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @expense.description %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @expense.amount %>
+  </li>
+
+  <li>
+    <strong>Month:</strong>
+    <%= @expense.month %>
+  </li>
+
+  <li>
+    <strong>Year:</strong>
+    <%= @expense.year %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.expense_show_path(@socket, :edit, @expense), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.expense_index_path(@socket, :index) %></span>

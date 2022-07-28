@@ -1,0 +1,87 @@
+<.admin_page_heading title="Subscriptions">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Subscriptions", to: Routes.admin_subscription_index_path(@socket, :index) %></:link>
+
+  <div class="btn-group">
+    <%= live_patch to: Routes.admin_subscription_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Subscriptions
+    <% end %>
+    <%= live_patch to: Routes.admin_product_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Products
+    <% end %>
+    <%= live_patch to: Routes.admin_customer_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Customers
+    <% end %>
+    <%= live_patch to: Routes.admin_invoice_index_path(@socket, :index), class: "btn btn-outline" do %>
+      Invoices
+    <% end %>
+  </div>
+</.admin_page_heading>
+
+<.admin_card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>
+            <.data_table_link sort={:inserted_at} params={@params}>
+              Created
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:current_period_start} params={@params}>
+              Current period start
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:current_period_end_at} params={@params}>
+              Current period end at
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:cancel_at} params={@params}>
+              Cancel at
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:canceled_at} params={@params}>
+              Canceled at
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:status} params={@params}>
+              Status
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:stripe_id} params={@params}>
+              Stripe
+            </.data_table_link>
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="subscriptions">
+<%= for subscription <- @entries do %>
+        <tr id={"subscription-#{subscription.id}"} class="text-sm">
+          <td><%= human_date subscription.inserted_at %></td>
+          <td><%= human_date subscription.current_period_start %></td>
+          <td><%= human_date subscription.current_period_end_at %></td>
+          <td><%= human_date subscription.cancel_at %></td>
+          <td><%= human_date subscription.canceled_at %></td>
+          <td><%= subscription.status %></td>
+          <td><%= subscription.stripe_id %></td>
+          <td class="text-right">
+            <span><%= live_redirect "Show", to: Routes.admin_subscription_show_path(@socket, :show, subscription), class: "link link-primary" %></span>
+          </td>
+        </tr>
+<% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2 mb-4">
+    <.pagination params={@params} {@pagination_assigns} />
+  </div>
+</.admin_card>

@@ -1,0 +1,62 @@
+<.admin_page_heading title="Plans">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Plans", to: Routes.admin_plan_index_path(@socket, :index, @product.id) %></:link>
+  <:link><%= live_redirect @plan.name, to: Routes.admin_plan_show_path(@socket, :show, @product.id, @plan.id) %></:link>
+</.admin_page_heading>
+
+<div class="flex flex-wrap">
+  <div class="w-full lg:w-2/3 grid grid-cols-1 gap-8">
+    <.admin_card>
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Show Plan</h3>
+        </div>
+      </div>
+      <div class="card-body prose">
+        <div>
+          <strong>Name:</strong>
+          <%= @plan.name %>
+        </div>
+        <div>
+          <strong>Nickname:</strong>
+          <%= @plan.nickname %>
+        </div>
+        <div>
+          <strong>Stripe:</strong>
+          <%= @plan.stripe_id %>
+        </div>
+        <div>
+          <strong>Active:</strong>
+          <%= @plan.active %>
+        </div>
+        <div>
+          <strong>Amount:</strong>
+          <%= @plan.amount %>
+        </div>
+        <div>
+          <strong>Currency:</strong>
+          <%= @plan.currency %>
+        </div>
+        <div>
+          <strong>Interval:</strong>
+          <%= @plan.interval %>
+        </div>
+        <div>
+          <strong>Interval count:</strong>
+          <%= @plan.interval_count %>
+        </div>
+        <div>
+          <strong>Trial period days:</strong>
+          <%= @plan.trial_period_days %>
+        </div>
+        <div>
+          <strong>Usage type:</strong>
+          <%= @plan.usage_type %>
+        </div>
+      </div>
+      <div class="border-t card-actions border-base-200">
+        <%= live_redirect "Back", to: Routes.admin_plan_index_path(@socket, :index, @product.id), class: "btn btn-link" %>
+      </div>
+    </.admin_card>
+  </div>
+</div>

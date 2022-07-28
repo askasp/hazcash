@@ -1,0 +1,74 @@
+<%= if @live_action in [:edit] do %>
+  <.modal id="modal" return_to={Routes.admin_product_index_path(@socket, :index)}>
+    <:modal_title><%= @page_title %></:modal_title>
+    <.live_component
+      module={HazCashWeb.Admin.BillingLive.FormComponent}
+      id={@product.id}
+      product={@product}
+      action={@live_action}
+      return_to={Routes.admin_product_index_path(@socket, :index)} />
+  </.modal>
+<% end %>
+
+<.admin_page_heading title="Products">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Products", to: Routes.admin_product_index_path(@socket, :index) %></:link>
+</.admin_page_heading>
+
+<.admin_card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>
+            <.data_table_link sort={:stripe_id} params={@params}>
+              Stripe
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:active} params={@params}>
+              Active
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:local_name} params={@params}>
+              Local name
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:name} params={@params}>
+              Name
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:inserted_at} params={@params}>
+              Created
+            </.data_table_link>
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="products">
+<%= for product <- @entries do %>
+        <tr id={"product-#{product.id}"} class="text-sm">
+          <td><%= product.stripe_id %></td>
+          <td><%= product.active %></td>
+          <td><%= product.local_name %></td>
+          <td><%= product.name %></td>
+          <td><%= Calendar.strftime product.inserted_at, "%x" %></td>
+          <td class="text-right">
+            <span><%= live_redirect "Show", to: Routes.admin_product_show_path(@socket, :show, product), class: "link link-primary" %></span>
+            <span><%= live_patch "Edit", to: Routes.admin_product_index_path(@socket, :edit, product), class: "link link-primary" %></span>
+            <span><%= live_redirect "Plans", to: Routes.admin_plan_index_path(@socket, :index, product), class: "link link-primary" %></span>
+          </td>
+        </tr>
+<% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2 mb-4">
+    <.pagination params={@params} {@pagination_assigns} />
+  </div>
+</.admin_card>

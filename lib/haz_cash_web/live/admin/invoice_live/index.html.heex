@@ -1,0 +1,67 @@
+<.admin_page_heading title="Invoices">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Invoices", to: Routes.admin_invoice_index_path(@socket, :index) %></:link>
+</.admin_page_heading>
+
+<.admin_card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>
+            <.data_table_link sort={:stripe_id} params={@params}>
+              Stripe
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:status} params={@params}>
+              Status
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:subtotal} params={@params}>
+              Subtotal
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:inserted_at} params={@params}>
+              Created
+            </.data_table_link>
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="invoices">
+<%= for invoice <- @entries do %>
+        <tr id={"invoice-#{invoice.id}"} class="text-sm">
+          <td><%= invoice.stripe_id %></td>
+          <td><%= invoice.status %></td>
+          <td><%= invoice.subtotal %></td>
+          <td><%= Calendar.strftime invoice.inserted_at, "%x" %></td>
+          <td class="text-right">
+            <span>
+              <%= link to: "#{invoice.hosted_invoice_url}", target: "_blank" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              <% end %>
+            </span>
+            <span>
+              <%= link to: "#{invoice.invoice_pdf}" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              <% end %>
+            </span>
+          </td>
+        </tr>
+<% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2 mb-4">
+    <.pagination params={@params} {@pagination_assigns} />
+  </div>
+</.admin_card>

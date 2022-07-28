@@ -1,0 +1,26 @@
+<div id="product-form-wrapper">
+  <.form
+    let={f}
+    for={@changeset}
+    id="product-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="mb-6 form-control">
+      <%= label f, :local_name, class: "label label-text" %>
+      <%= text_input f, :local_name, class: "input input-bordered" %>
+      <%= error_tag f, :local_name %>
+    </div>
+
+    <div class="mb-6 form-control">
+      <%= label f, :local_description, class: "label label-text" %>
+      <%= text_input f, :local_description, class: "input input-bordered" %>
+      <%= error_tag f, :local_description %>
+    </div>
+
+    <div class="mt-8 mb-2">
+      <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
+    </div>
+  </.form>
+</div>

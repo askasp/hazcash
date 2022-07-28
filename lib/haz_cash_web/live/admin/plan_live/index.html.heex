@@ -1,0 +1,88 @@
+<.admin_page_heading title="Plans">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Plans", to: Routes.admin_plan_index_path(@socket, :index, @product.id) %></:link>
+
+  <%= live_redirect to: Routes.admin_product_index_path(@socket, :index), class: "btn btn-outline" do %>
+    Back
+  <% end %>
+</.admin_page_heading>
+
+<.admin_card>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>
+            <.data_table_link sort={:stripe_id} params={@params}>
+              Stripe
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:name} params={@params}>
+              Name
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:active} params={@params}>
+              Active
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:amount} params={@params}>
+              Amount
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:currency} params={@params}>
+              Currency
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:interval} params={@params}>
+              Interval
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:interval_count} params={@params}>
+              Interval count
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:trial_period_days} params={@params}>
+              Trial period days
+            </.data_table_link>
+          </th>
+          <th>
+            <.data_table_link sort={:inserted_at} params={@params}>
+              Created
+            </.data_table_link>
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="plans">
+<%= for plan <- @entries do %>
+        <tr id={"plan-#{plan.id}"} class="text-sm">
+          <td><%= plan.stripe_id %></td>
+          <td><%= plan.name %></td>
+          <td><%= plan.active %></td>
+          <td><%= plan.amount %></td>
+          <td><%= plan.currency %></td>
+          <td><%= plan.interval %></td>
+          <td><%= plan.interval_count %></td>
+          <td><%= plan.trial_period_days %></td>
+          <td><%= Calendar.strftime plan.inserted_at, "%x" %></td>
+          <td class="text-right">
+            <span><%= live_redirect "Show", to: Routes.admin_plan_show_path(@socket, :show, @product.id, plan.id), class: "link link-primary" %></span>
+          </td>
+        </tr>
+<% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-2 mb-4">
+    <.pagination params={@params} {@pagination_assigns} />
+  </div>
+</.admin_card>

@@ -1,0 +1,50 @@
+<h1 class="font-sans text-3xl text-base-content text-opacity-80 leading-10 md:text-3xl mb-8 ">Listing Expense accounts</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.expense_account_index_path(@socket, :index)} >
+    <:modal_title> New expense account  </:modal_title>
+    <.live_component
+
+      module={HazCashWeb.ExpenseAccountLive.FormComponent}
+      id={@expense_account.id || :new}
+      action={@live_action}
+      modal_title={@page_title}
+      expense_account={@expense_account}
+      return_to={Routes.expense_account_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+
+<div class="overflow-x-auto">
+  <table class="table table-compact w-full">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Priority</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="expense_accounts">
+    <%= for expense_account <- @expense_accounts do %>
+      <tr id={"expense_account-#{expense_account.id}"}>
+        <td><%= expense_account.name %></td>
+        <td><%= expense_account.priority %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.expense_account_show_path(@socket, :show, expense_account) %></span>
+          <span><%= live_patch "Edit", to: Routes.expense_account_index_path(@socket, :edit, expense_account) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: expense_account.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<%= live_patch to: Routes.expense_account_index_path(@socket, :new) do %>
+<button class="mt-8 btn"> 
+New Expense Account
+</button>
+<% end %>
+

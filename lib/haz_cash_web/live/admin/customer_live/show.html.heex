@@ -1,0 +1,86 @@
+<.admin_page_heading title="Customers">
+  <:link><%= live_redirect "Dashboard", to: Routes.admin_dashboard_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Customers", to: Routes.admin_customer_index_path(@socket, :index) %></:link>
+  <:link><%= live_redirect "Page", to: Routes.admin_customer_show_path(@socket, :show, @customer) %></:link>
+</.admin_page_heading>
+
+<div class="flex flex-wrap">
+  <div class="w-full lg:w-2/3 grid grid-cols-1 gap-8">
+    <.admin_card>
+      <div class="flex items-center justify-between px-4 py-3 border-b border-base-200">
+        <div class="prose">
+          <h3>Show Customer</h3>
+        </div>
+      </div>
+      <div class="card-body prose">
+        <div>
+          <strong>Email:</strong>
+          <%= @customer.email %>
+        </div>
+        <div>
+          <strong>Stripe:</strong>
+          <%= @customer.stripe_id %>
+        </div>
+        <div>
+          <strong>Card brand:</strong>
+          <%= @customer.card_brand %>
+        </div>
+        <div>
+          <strong>Card exp month:</strong>
+          <%= @customer.card_exp_month %>
+        </div>
+        <div>
+          <strong>Card exp year:</strong>
+          <%= @customer.card_exp_year %>
+        </div>
+        <div>
+          <strong>Card last4:</strong>
+          <%= @customer.card_last4 %>
+        </div>
+      </div>
+      <div class="border-t card-actions border-base-200">
+        <%= live_redirect "Back", to: Routes.admin_customer_index_path(@socket, :index), class: "btn btn-link" %>
+      </div>
+    </.admin_card>
+
+    <div class="prose">
+      <h2>Subscriptions</h2>
+    </div>
+
+    <.admin_card>
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th>Created</th>
+              <th>Current period start</th>
+              <th>Current period end at</th>
+              <th>Cancel at</th>
+              <th>Canceled at</th>
+              <th>Status</th>
+              <th>Stripe</th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="subscriptions">
+  <%= for subscription <- @customer.subscriptions do %>
+            <tr id={"subscription-#{subscription.id}"} class="text-sm">
+              <th><%= human_date subscription.inserted_at %></th>
+              <td><%= human_date subscription.current_period_start %></td>
+              <td><%= human_date subscription.current_period_end_at %></td>
+              <td><%= human_date subscription.cancel_at %></td>
+              <td><%= human_date subscription.canceled_at %></td>
+              <td><%= subscription.status %></td>
+              <td><%= subscription.stripe_id %></td>
+              <td class="text-right">
+                <span><%= live_redirect "Show", to: Routes.admin_subscription_show_path(@socket, :show, subscription), class: "link link-primary" %></span>
+              </td>
+            </tr>
+  <% end %>
+          </tbody>
+        </table>
+      </div>
+    </.admin_card>
+  </div>
+</div>
