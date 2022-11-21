@@ -60,7 +60,7 @@ defmodule HazCash.MixProject do
       {:guardian, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:oban, "~> 2.12.0"},
+      {:oban, "~> 2.13.5"},
       {:phoenix_swoosh, "~> 1.0.0"},
       {:premailex, "~> 0.3.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
